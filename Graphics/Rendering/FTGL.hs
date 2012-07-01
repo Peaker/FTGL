@@ -26,7 +26,7 @@
 module Graphics.Rendering.FTGL
 where
 
-import Foreign (unsafePerformIO)
+import System.IO.Unsafe (unsafePerformIO)
 import Foreign.C
 import Foreign.Ptr
 import Foreign.Marshal.Alloc
