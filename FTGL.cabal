@@ -14,8 +14,8 @@ Synopsis:       Portable TrueType font rendering for OpenGL using the Freetype2 
 Build-Type:     Simple
 
 Library
+   ghc-options:   -O2
    Build-Depends: OpenGL, base
    Exposed-Modules:
       Graphics.Rendering.FTGL
    extra-libraries: ftgl
-

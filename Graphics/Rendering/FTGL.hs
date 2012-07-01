@@ -1,6 +1,5 @@
 {-# INCLUDE <FTGL/ftgl.h> #-}
 {-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls #-}
-{-# OPTIONS_GHC -O2 #-}
 -- | * Author: Jefferson Heard (jefferson.r.heard at gmail.com)
 --
 --   * Copyright 2008 Renaissance Computing Institute < http://www.renci.org >
