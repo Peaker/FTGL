@@ -1,4 +1,3 @@
-{-# INCLUDE <FTGL/ftgl.h> #-}
 {-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls #-}
 -- | * Author: Jefferson Heard (jefferson.r.heard at gmail.com)
 --
