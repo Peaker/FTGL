@@ -1,4 +1,4 @@
-{-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls #-}
+{-# LANGUAGE ForeignFunctionInterface, DeriveDataTypeable, EmptyDataDecls #-}
 -- | * Author: Jefferson Heard (jefferson.r.heard at gmail.com)
 --
 --   * Copyright 2008 Renaissance Computing Institute < http://www.renci.org >
@@ -21,49 +21,61 @@
 --
 -- Fonts are rendered so that a single point is an OpenGL unit, and a point is 1:72 of
 -- an inch.
-module Graphics.Rendering.FTGL
-where
+module Graphics.Rendering.FTGL where
 
 import Control.Applicative ((<$>))
+import Control.Monad (when)
 import Data.Bits
 import Data.Char (ord)
+import Data.Typeable (Typeable)
 import Foreign.C
 import Foreign.Marshal.Alloc
 import Foreign.Marshal.Array
 import Foreign.Ptr
 import System.IO.Unsafe (unsafePerformIO)
+import qualified Control.Exception as Exc
 import qualified Graphics.Rendering.OpenGL.GL as GL
+
+data FontLoadFailure = FontLoadFailure FilePath
+  deriving (Show, Typeable)
+instance Exc.Exception FontLoadFailure
+
+fontLoad :: FilePath -> (CString -> IO Font) -> IO Font
+fontLoad file f = do
+  ptr <- withCString file f
+  when (nullPtr == ptr) $ Exc.throwIO (FontLoadFailure file)
+  return ptr
 
 foreign import ccall unsafe "ftglCreateBitmapFont" fcreateBitmapFont :: CString -> IO Font
 -- | Create a bitmapped version of a TrueType font.  Bitmapped versions will not
 -- | respond to matrix transformations, but rather must be transformed using the
 -- | raster positioning functions in OpenGL
-createBitmapFont :: String -> IO Font
-createBitmapFont file = withCString file $ \p -> fcreateBitmapFont p
+createBitmapFont :: FilePath -> IO Font
+createBitmapFont file = fontLoad file $ \p -> fcreateBitmapFont p
 
 
 foreign import ccall unsafe "ftglCreateBufferFont" fcreateBufferFont :: CString -> IO Font
 -- | Create a buffered version of a TrueType font. This stores the entirety of
 -- | a string in a texture, "buffering" it before rendering.  Very fast if you
 -- | will be repeatedly rendering the same strings over and over.
-createBufferFont :: String -> IO Font
-createBufferFont file = withCString file $ \p -> fcreateBufferFont p
+createBufferFont :: FilePath -> IO Font
+createBufferFont file = fontLoad file $ \p -> fcreateBufferFont p
 
 
 foreign import ccall unsafe "ftglCreateOutlineFont" fcreateOutlineFont :: CString -> IO Font
 -- | Create an outline version of a TrueType font. This uses actual geometry
 -- | and will scale independently without loss of quality.  Faster than polygons
 -- | but slower than texture or buffer fonts.
-createOutlineFont :: String -> IO Font
-createOutlineFont file = withCString file $ \p -> fcreateOutlineFont p
+createOutlineFont :: FilePath -> IO Font
+createOutlineFont file = fontLoad file $ \p -> fcreateOutlineFont p
 
 
 foreign import ccall unsafe "ftglCreatePixmapFont" fcreatePixmapFont  :: CString -> IO Font
 -- | Create a pixmap version of a TrueType font.  Higher quality than the bitmap
 -- | font without losing any performance.  Use this if you don't mind using
 -- | set and get RasterPosition.
-createPixmapFont :: String -> IO Font
-createPixmapFont file = withCString file $ \p -> fcreatePixmapFont p
+createPixmapFont :: FilePath -> IO Font
+createPixmapFont file = fontLoad file $ \p -> fcreatePixmapFont p
 
 
 foreign import ccall unsafe "ftglCreatePolygonFont" fcreatePolygonFont :: CString -> IO Font
@@ -72,8 +84,8 @@ foreign import ccall unsafe "ftglCreatePolygonFont" fcreatePolygonFont :: CStrin
 -- | for large amounts of text because of the high number of polygons needed.
 -- | Additionally, they do not, unlike the textured fonts, create artifacts
 -- | within the square formed at the edge of each character.
-createPolygonFont :: String -> IO Font
-createPolygonFont file = withCString file $ \p -> fcreatePolygonFont p
+createPolygonFont :: FilePath -> IO Font
+createPolygonFont file = fontLoad file $ \p -> fcreatePolygonFont p
 
 
 foreign import ccall unsafe "ftglCreateTextureFont" fcreateTextureFont :: CString -> IO Font
@@ -82,8 +94,8 @@ foreign import ccall unsafe "ftglCreateTextureFont" fcreateTextureFont :: CStrin
 -- | though, so are suitable for large quantities of text.  Especially suited
 -- | well to text that changes with most frames, because it doesn't incur the
 -- | (normally helpful) overhead of buffering.
-createTextureFont :: String -> IO Font
-createTextureFont file = withCString file $ \p -> fcreateTextureFont p
+createTextureFont :: FilePath -> IO Font
+createTextureFont file = fontLoad file $ \p -> fcreateTextureFont p
 
 
 foreign import ccall unsafe "ftglCreateExtrudeFont" fcreateExtrudeFont :: CString -> IO Font
@@ -91,8 +103,8 @@ foreign import ccall unsafe "ftglCreateExtrudeFont" fcreateExtrudeFont :: CStrin
 -- | within FTGL.  Could be fun to use a geometry shader to get different
 -- | effects by warping the otherwise square nature of the font.  Polygonal.
 -- | Scales without losing quality.  Slower than all other fonts.
-createExtrudeFont :: String -> IO Font
-createExtrudeFont file = withCString file $ \p -> fcreateExtrudeFont p
+createExtrudeFont :: FilePath -> IO Font
+createExtrudeFont file = fontLoad file $ \p -> fcreateExtrudeFont p
 
 
 
