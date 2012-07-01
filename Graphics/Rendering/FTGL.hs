@@ -26,17 +26,15 @@
 module Graphics.Rendering.FTGL
 where
 
-import System.IO.Unsafe (unsafePerformIO)
-import Foreign.C
-import Foreign.Ptr
-import Foreign.Marshal.Alloc
-import Foreign.Marshal.Array
+import Control.Applicative ((<$>))
 import Data.Bits
 import Data.Char (ord)
-
+import Foreign.C
+import Foreign.Marshal.Alloc
+import Foreign.Marshal.Array
+import Foreign.Ptr
+import System.IO.Unsafe (unsafePerformIO)
 import qualified Graphics.Rendering.OpenGL.GL as GL
-
-import Control.Applicative ((<$>))
 
 foreign import ccall unsafe "ftglCreateBitmapFont" fcreateBitmapFont :: CString -> IO Font
 -- | Create a bitmapped version of a TrueType font.  Bitmapped versions will not
