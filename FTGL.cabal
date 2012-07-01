@@ -1,5 +1,5 @@
 Name:           FTGL
-Version:        1.333
+Version:        1.400
 Cabal-Version:  >= 1.2
 License:        BSD3
 License-File:   LICENSE
@@ -12,6 +12,10 @@ Description:
   Freetype2 and any truetype font. 
 Synopsis:       Portable TrueType font rendering for OpenGL using the Freetype2 library
 Build-Type:     Simple
+
+source-repository head
+  type:     git
+  location: https://github.com/Peaker/FTGL.git
 
 Library
    ghc-options:   -O2
