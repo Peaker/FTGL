@@ -11,7 +11,7 @@ Description:
   This package provides OpenGL with polygonal, texture mapped, and extruded fonts using
   Freetype2 and any truetype font.
 Synopsis:       Portable TrueType font rendering for OpenGL using the Freetype2 library
-Build-Type:     Simple
+Build-Type:     Custom
 
 source-repository head
   type:     git
@@ -22,8 +22,9 @@ Library
    Build-Depends: OpenGL, base, freetype2
    Exposed-Modules: Graphics.Rendering.FTGL
    include-dirs: src src/src
-   cc-options: -O2
-   c-sources:
+   x-dll-extra-libraries:
+   x-dll-name: FTGL
+   x-dll-sources:
       src/src/FTSize.cpp
       src/src/FTLibrary.cpp
       src/src/FTCharmap.cpp
@@ -51,6 +52,6 @@ Library
       src/src/FTGlyph/FTOutlineGlyph.cpp
       src/src/FTGlyph/FTBitmapGlyph.cpp
       src/src/FTVectoriser.cpp
+      src/src/FTLayout/FTSimpleLayout.cpp
       src/src/FTLayout/FTLayout.cpp
       src/src/FTLayout/FTLayoutGlue.cpp
-      src/src/FTLayout/FTSimpleLayout.cpp
