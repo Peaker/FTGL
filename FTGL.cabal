@@ -22,6 +22,7 @@ Library
    Build-Depends: OpenGL, base, freetype2
    Exposed-Modules: Graphics.Rendering.FTGL
    include-dirs: src src/src
+   cc-options: -O2
    c-sources:
       src/src/FTSize.cpp
       src/src/FTLibrary.cpp
