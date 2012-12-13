@@ -19,7 +19,7 @@ source-repository head
 
 Library
    ghc-options:   -O2
-   Build-Depends: OpenGL, base, freetype2
+   Build-Depends: OpenGL, base, freetype2 >= 0.1.2
    Exposed-Modules: Graphics.Rendering.FTGL
    include-dirs: src src/src
    x-dll-extra-libraries:
