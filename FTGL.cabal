@@ -19,7 +19,37 @@ source-repository head
 
 Library
    ghc-options:   -O2
-   Build-Depends: OpenGL, base
-   Exposed-Modules:
-      Graphics.Rendering.FTGL
-   extra-libraries: ftgl
+   Build-Depends: OpenGL, base, freetype2
+   Exposed-Modules: Graphics.Rendering.FTGL
+   include-dirs: src src/src
+   c-sources:
+      src/src/FTSize.cpp
+      src/src/FTLibrary.cpp
+      src/src/FTCharmap.cpp
+      src/src/FTGlyphContainer.cpp
+      src/src/FTPoint.cpp
+      src/src/FTFace.cpp
+      src/src/FTFont/FTExtrudeFont.cpp
+      src/src/FTFont/FTPixmapFont.cpp
+      src/src/FTFont/FTOutlineFont.cpp
+      src/src/FTFont/FTBitmapFont.cpp
+      src/src/FTFont/FTPolygonFont.cpp
+      src/src/FTFont/FTBufferFont.cpp
+      src/src/FTFont/FTFontGlue.cpp
+      src/src/FTFont/FTTextureFont.cpp
+      src/src/FTFont/FTFont.cpp
+      src/src/FTContour.cpp
+      src/src/FTBuffer.cpp
+      src/src/FTGlyph/FTGlyph.cpp
+      src/src/FTGlyph/FTTextureGlyph.cpp
+      src/src/FTGlyph/FTPolygonGlyph.cpp
+      src/src/FTGlyph/FTGlyphGlue.cpp
+      src/src/FTGlyph/FTPixmapGlyph.cpp
+      src/src/FTGlyph/FTExtrudeGlyph.cpp
+      src/src/FTGlyph/FTBufferGlyph.cpp
+      src/src/FTGlyph/FTOutlineGlyph.cpp
+      src/src/FTGlyph/FTBitmapGlyph.cpp
+      src/src/FTVectoriser.cpp
+      src/src/FTLayout/FTLayout.cpp
+      src/src/FTLayout/FTLayoutGlue.cpp
+      src/src/FTLayout/FTSimpleLayout.cpp
