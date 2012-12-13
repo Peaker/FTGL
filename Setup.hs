@@ -46,7 +46,8 @@ myConfHook (pkg0, pbi) flags = do
 -- is shipped with only a static version of libstdc++.
 -- TODO: Does not currently create the build output directory.
 myBuildHook :: PackageDescription -> LocalBuildInfo -> UserHooks -> BuildFlags -> IO ()
-myBuildHook pkg_descr local_bld_info _user_hooks _bld_flags = do
+myBuildHook pkg_descr local_bld_info user_hooks bld_flags = do
+    buildHook simpleUserHooks pkg_descr local_bld_info user_hooks bld_flags
     -- Extract the custom fields customFieldsPD where field name is x-cpp-dll-sources
     let pkgIds = map fst . maybe [] componentPackageDeps $ libraryConfig local_bld_info
         lib = unjust "library of pkg_descr" (library pkg_descr)
